@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HOMEWORK | WOLFFY Mission</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #121212; 
+            color: white;
+            -webkit-tap-highlight-color: transparent;
+            overflow: hidden; /* Prevent scrolling for card experience */
+        }
+        .spotify-green { color: #1DB954; }
+        .bg-spotify-green { background-color: #1DB954; }
+        .glass-card {
+            background: #181818;
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        .gradient-header {
+            background: linear-gradient(180deg, #333 0%, #121212 100%);
+        }
+        
+        /* Multiple Choice Styles */
+        .option-btn {
+            background: #282828;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+            text-align: left;
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 15px;
+            color: #b3b3b3;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .option-btn.selected {
+            background: rgba(29, 185, 84, 0.15);
+            border-color: #1DB954;
+            color: white;
+            font-weight: 700;
+        }
+
+        .step-card {
+            display: none;
+            animation: slideIn 0.4s ease-out forwards;
+        }
+        .step-card.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .progress-bar-container {
+            height: 4px;
+            background: #333;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+        #progress-fill {
+            height: 100%;
+            background: #1DB954;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        textarea, input[type="text"] {
+            background: #282828 !important;
+            border: 1px solid rgba(255,255,255,0.05) !important;
+            color: white !important;
+            outline: none;
+        }
+        textarea:focus, input[type="text"]:focus {
+            border-color: #1DB954 !important;
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col">
+
+    <div class="progress-bar-container">
+        <div id="progress-fill"></div>
+    </div>
+
+    <header class="pt-10 pb-4 px-6 text-center shrink-0">
+        <p class="text-[9px] font-black uppercase tracking-[0.4em] spotify-green mb-1">Homework Mission</p>
+        <h1 id="header-title" class="text-xl font-black tracking-tight">Talking to Myself</h1>
+    </header>
+
+    <main class="flex-grow px-6 flex items-center justify-center relative overflow-hidden">
+        
+        <!-- INTRO CARD -->
+        <div id="step-intro" class="step-card active w-full max-w-md text-center space-y-8">
+            <div class="w-48 h-48 mx-auto bg-[#282828] rounded-xl shadow-2xl overflow-hidden relative border border-white/10">
+                <img src="https://images.unsplash.com/photo-1493225255756-d9584f8606e9?w=400&q=80" class="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-luminosity">
+                <i class="fas fa-bolt text-5xl spotify-green relative z-10"></i>
+            </div>
+            <div class="space-y-2">
+                <h2 class="text-4xl font-black tracking-tighter">Ready to Start?</h2>
+                <p class="text-[#b3b3b3] text-base">15 Interactive tasks based on Linkin Park.</p>
+            </div>
+            <button onclick="nextStep()" class="w-full py-5 bg-spotify-green text-black font-black uppercase tracking-widest rounded-full text-sm shadow-xl hover:scale-105 transition-transform">
+                Start Mission
+            </button>
+        </div>
+
+        <!-- GRAMMAR (1-5) -->
+        <div id="step-1" class="step-card w-full max-w-md glass-card p-8 space-y-6" data-type="choice" data-correct="1">
+            <span class="section-label text-[10px] font-black uppercase tracking-widest spotify-green">Grammar 1/5</span>
+            <p class="text-xl font-bold leading-tight">Linkin Park _______ my favorite song right now.</p>
+            <div class="space-y-3">
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">A</span> is sing</button>
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">B</span> is singing</button>
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">C</span> are singing</button>
+            </div>
+        </div>
+
+        <div id="step-2" class="step-card w-full max-w-md glass-card p-8 space-y-6" data-type="choice" data-correct="2">
+            <span class="section-label text-[10px] font-black uppercase tracking-widest spotify-green">Grammar 2/5</span>
+            <p class="text-xl font-bold leading-tight">Negative: "I _______ to you because I am distracted."</p>
+            <div class="space-y-3">
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">A</span> am not listen</button>
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">B</span> not am listening</button>
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">C</span> am not listening</button>
+            </div>
+        </div>
+
+        <div id="step-3" class="step-card w-full max-w-md glass-card p-8 space-y-6" data-type="choice" data-correct="0">
+            <span class="section-label text-[10px] font-black uppercase tracking-widest spotify-green">Grammar 3/5</span>
+            <p class="text-xl font-bold leading-tight">_______ you talking to yourself again?</p>
+            <div class="space-y-3">
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">A</span> Are</button>
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">B</span> Is</button>
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">C</span> Am</button>
+            </div>
+        </div>
+
+        <div id="step-4" class="step-card w-full max-w-md glass-card p-8 space-y-6" data-type="choice" data-correct="1">
+            <span class="section-label text-[10px] font-black uppercase tracking-widest spotify-green">Grammar 4/5</span>
+            <p class="text-xl font-bold leading-tight">Which action is happening <span class="underline">now</span>?</p>
+            <div class="space-y-3">
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">A</span> I yell every day.</button>
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">B</span> I am yelling at the wall.</button>
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">C</span> I yelled yesterday.</button>
+            </div>
+        </div>
+
+        <div id="step-5" class="step-card w-full max-w-md glass-card p-8 space-y-6" data-type="choice" data-correct="2">
+            <span class="section-label text-[10px] font-black uppercase tracking-widest spotify-green">Grammar 5/5</span>
+            <p class="text-xl font-bold leading-tight">Correct the error: "She are calling me home."</p>
+            <div class="space-y-3">
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">A</span> She calling me home.</button>
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">B</span> She am calling me home.</button>
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">C</span> She is calling me home.</button>
+            </div>
+        </div>
+
+        <!-- VOCAB (6-10) -->
+        <div id="step-6" class="step-card w-full max-w-md glass-card p-8 space-y-6" data-type="choice" data-correct="0">
+            <span class="section-label text-[10px] font-black uppercase tracking-widest spotify-green">Vocab 1/5</span>
+            <p class="text-xl font-bold leading-tight">"The lights are on but nobody's home" means:</p>
+            <div class="space-y-3">
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">A</span> Physically present, mentally absent.</button>
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">B</span> The house is dark.</button>
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">C</span> Someone is coming home.</button>
+            </div>
+        </div>
+
+        <div id="step-7" class="step-card w-full max-w-md glass-card p-8 space-y-6" data-type="choice" data-correct="2">
+            <span class="section-label text-[10px] font-black uppercase tracking-widest spotify-green">Vocab 2/5</span>
+            <p class="text-xl font-bold leading-tight">What does "<span class="spotify-green">gotta</span>" mean?</p>
+            <div class="space-y-3">
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">A</span> Go to</button>
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">B</span> Get a</button>
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">C</span> Got to / Have to</button>
+            </div>
+        </div>
+
+        <div id="step-8" class="step-card w-full max-w-md glass-card p-8 space-y-6" data-type="choice" data-correct="1">
+            <span class="section-label text-[10px] font-black uppercase tracking-widest spotify-green">Vocab 3/5</span>
+            <p class="text-xl font-bold leading-tight">"Building walls" in the song represents:</p>
+            <div class="space-y-3">
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">A</span> Construction work.</button>
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">B</span> Emotional distance.</button>
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">C</span> Decorating a room.</button>
+            </div>
+        </div>
+
+        <div id="step-9" class="step-card w-full max-w-md glass-card p-8 space-y-6" data-type="choice" data-correct="0">
+            <span class="section-label text-[10px] font-black uppercase tracking-widest spotify-green">Vocab 4/5</span>
+            <p class="text-xl font-bold leading-tight">When you <span class="spotify-green">whisper</span>, you speak:</p>
+            <div class="space-y-3">
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">A</span> Very quietly.</button>
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">B</span> Very loudly.</button>
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">C</span> In another language.</button>
+            </div>
+        </div>
+
+        <div id="step-10" class="step-card w-full max-w-md glass-card p-8 space-y-6" data-type="choice" data-correct="1">
+            <span class="section-label text-[10px] font-black uppercase tracking-widest spotify-green">Vocab 5/5</span>
+            <p class="text-xl font-bold leading-tight">"The sky is falling" is used for:</p>
+            <div class="space-y-3">
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">A</span> A rainy day.</button>
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">B</span> Panic or disaster.</button>
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">C</span> Beautiful sunset.</button>
+            </div>
+        </div>
+
+        <!-- ANALYSIS (11-15) -->
+        <div id="step-11" class="step-card w-full max-w-md glass-card p-8 space-y-6">
+            <span class="section-label text-[10px] font-black uppercase tracking-widest spotify-green">Interpretation 1/5</span>
+            <p class="text-sm italic text-[#b3b3b3] border-l-2 border-[#1DB954] pl-4">"You keep running like the sky is falling"</p>
+            <p class="text-xl font-bold leading-tight">Why is the person "running"?</p>
+            <textarea class="w-full p-4 rounded-xl text-white text-sm bg-[#282828] h-32 resize-none" placeholder="Type your answer..."></textarea>
+        </div>
+
+        <div id="step-12" class="step-card w-full max-w-md glass-card p-8 space-y-6" data-type="choice" data-correct="0">
+            <span class="section-label text-[10px] font-black uppercase tracking-widest spotify-green">Interpretation 2/5</span>
+            <p class="text-sm italic text-[#b3b3b3] border-l-2 border-[#1DB954] pl-4">"I'm just talking to myself"</p>
+            <p class="text-xl font-bold leading-tight">Does the other person hear the singer?</p>
+            <div class="space-y-3">
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">A</span> No, they are being ignored.</button>
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">B</span> Yes, but they don't care.</button>
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">C</span> They are both talking.</button>
+            </div>
+        </div>
+
+        <div id="step-13" class="step-card w-full max-w-md glass-card p-8 space-y-6">
+            <span class="section-label text-[10px] font-black uppercase tracking-widest spotify-green">Interpretation 3/5</span>
+            <p class="text-sm italic text-[#b3b3b3] border-l-2 border-[#1DB954] pl-4">"But you're not giving me a chance"</p>
+            <p class="text-xl font-bold leading-tight">How does the singer feel here?</p>
+            <textarea class="w-full p-4 rounded-xl text-white text-sm bg-[#282828] h-32 resize-none" placeholder="Your interpretation..."></textarea>
+        </div>
+
+        <div id="step-14" class="step-card w-full max-w-md glass-card p-8 space-y-6" data-type="choice" data-correct="1">
+            <span class="section-label text-[10px] font-black uppercase tracking-widest spotify-green">Interpretation 4/5</span>
+            <p class="text-xl font-bold leading-tight">What is the main message of the song?</p>
+            <div class="space-y-3">
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">A</span> Traveling alone.</button>
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">B</span> Lack of communication.</button>
+                <button class="option-btn" onclick="selectOption(this)"><span class="font-black opacity-30">C</span> Learning to yell.</button>
+            </div>
+        </div>
+
+        <div id="step-15" class="step-card w-full max-w-md glass-card p-8 space-y-6">
+            <span class="section-label text-[10px] font-black uppercase tracking-widest spotify-green">Final Task 5/5</span>
+            <p class="text-xl font-bold leading-tight">Write a sentence using: <span class="spotify-green">am/is/are + calling</span>.</p>
+            <input type="text" class="w-full p-4 rounded-xl text-white text-sm bg-[#282828]" placeholder="e.g. My friend is calling me.">
+        </div>
+
+        <!-- RESULT CARD -->
+        <div id="step-result" class="step-card w-full max-w-md text-center space-y-8">
+            <div class="w-24 h-24 bg-spotify-green rounded-full flex items-center justify-center mx-auto text-black text-4xl shadow-[0_0_30px_rgba(29,185,84,0.4)]">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <div class="space-y-2">
+                <h2 class="text-4xl font-black tracking-tighter">Excellent!</h2>
+                <p id="result-score" class="text-xl font-bold spotify-green"></p>
+                <p class="text-[#b3b3b3]">Take a screenshot and send it to your teacher.</p>
+            </div>
+            <p class="text-lg font-black tracking-tight pt-4">
+                Listen to the song to practice more!
+            </p>
+            <button onclick="window.open('https://www.youtube.com/results?search_query=talking+to+myself+linkin+park+lyrics')" class="w-full py-4 bg-white text-black font-black uppercase tracking-widest rounded-full flex items-center justify-center gap-3">
+                <i class="fab fa-youtube text-red-600"></i> Open Music
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Navigation Footer -->
+    <footer class="p-6 shrink-0 flex gap-4 max-w-md mx-auto w-full">
+        <button id="prev-btn" onclick="prevStep()" class="flex-1 py-4 bg-white/5 border border-white/10 rounded-full font-black uppercase tracking-widest text-[10px] hidden">Back</button>
+        <button id="next-btn" onclick="nextStep()" class="flex-[2] py-4 bg-white text-black rounded-full font-black uppercase tracking-widest text-[10px] hidden">Next</button>
+    </footer>
+
+    <script>
+        let currentStep = 0;
+        const totalSteps = 16; // Intro + 15 Questions + Result
+
+        function updateProgress() {
+            const percentage = (currentStep / (totalSteps - 1)) * 100;
+            document.getElementById('progress-fill').style.width = percentage + '%';
+        }
+
+        function selectOption(btn) {
+            const parent = btn.parentElement;
+            parent.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+        }
+
+        function nextStep() {
+            const steps = document.querySelectorAll('.step-card');
+            if (currentStep < steps.length - 1) {
+                steps[currentStep].classList.remove('active');
+                currentStep++;
+                steps[currentStep].classList.add('active');
+                
+                if (currentStep === steps.length - 1) {
+                    calculateResult();
+                }
+            }
+            updateUI();
+        }
+
+        function prevStep() {
+            const steps = document.querySelectorAll('.step-card');
+            if (currentStep > 0) {
+                steps[currentStep].classList.remove('active');
+                currentStep--;
+                steps[currentStep].classList.add('active');
+            }
+            updateUI();
+        }
+
+        function updateUI() {
+            const nextBtn = document.getElementById('next-btn');
+            const prevBtn = document.getElementById('prev-btn');
+            
+            // Show/Hide buttons based on step
+            if (currentStep === 0) {
+                nextBtn.classList.add('hidden');
+                prevBtn.classList.add('hidden');
+            } else if (currentStep === totalSteps - 1) {
+                nextBtn.classList.add('hidden');
+                prevBtn.classList.remove('hidden');
+            } else {
+                nextBtn.classList.remove('hidden');
+                prevBtn.classList.remove('hidden');
+                nextBtn.innerText = currentStep === totalSteps - 2 ? "Finish" : "Next";
+            }
+            updateProgress();
+        }
+
+        function calculateResult() {
+            const questions = document.querySelectorAll('[data-type="choice"]');
+            let correct = 0;
+            questions.forEach(q => {
+                const correctIdx = parseInt(q.getAttribute('data-correct'));
+                const selected = q.querySelector('.option-btn.selected');
+                if (selected) {
+                    const buttons = Array.from(q.querySelectorAll('.option-btn'));
+                    if (buttons.indexOf(selected) === correctIdx) {
+                        correct++;
+                    }
+                }
+            });
+            document.getElementById('result-score').innerText = `You scored ${correct} out of ${questions.length} on multiple choice!`;
+        }
+
+        // Initialize progress
+        updateProgress();
+    </script>
+
+</body>
+</html>
